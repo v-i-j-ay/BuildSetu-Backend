@@ -66,7 +66,7 @@ const registerLabour=async (req,res)=>{
     </div>
   </div>
   `
-).catch(err => console.error(" email failed:", err.message));
+);
 
     //to user 
 
@@ -102,7 +102,7 @@ const registerLabour=async (req,res)=>{
     </div>
   </div>
   `
-).catch(err => console.error(" email failed:", err.message));
+);
 
       res.status(201).json({message: "Labour registered successfully",labour });
 
@@ -156,7 +156,7 @@ const approveLabour = async (req, res) => {
         </div>
       </div>
       `
-    ).catch(err => console.error(" email failed:", err.message));
+    );
 
     res.json({
       message: "Labour approved successfully",
@@ -203,7 +203,7 @@ const rejectLabour = async (req, res) => {
         </div>
       </div>
       `
-    ).catch(err => console.error(" email failed:", err.message));
+    );
 
 
     res.json({
