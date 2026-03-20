@@ -90,38 +90,34 @@ const approveLabour = async (req, res) => {
       { status: "approved" },
       { new: true }
     );
-    
-     // send approval email
-    await sendEmail(
-      labour.email,
-      "BuildSetu – Profile Approved 🎉",
-      `
-      <div style="font-family:Arial;padding:20px;background:#f4f6f8">
-        <div style="max-width:600px;margin:auto;background:white;padding:25px;border-radius:8px">
 
-          <h2 style="color:#2c3e50">BuildSetu</h2>
+    if (!labour) {
+      return res.status(404).json({ message: "Labour not found" });
+    }
 
-          <p>Hello <b>${labour.name}</b>,</p>
-
-          <p>Great news! Your profile has been <b>approved</b> by our team.</p>
-
-          <p>Your profile is now visible on BuildSetu and contractors can contact you.</p>
-
-          <br/>
-
-          <p>Best Regards,<br><b>BuildSetu Team</b></p>
-
-        </div>
-      </div>
-      `
-    );
-
+   
     res.json({
       message: "Labour approved successfully",
       labour
     });
 
+   
+    sendEmail(
+      labour.email,
+      "BuildSetu – Profile Approved 🎉",
+      `
+      <div style="font-family:Arial;padding:20px;background:#f4f6f8">
+        <div style="max-width:600px;margin:auto;background:white;padding:25px;border-radius:8px">
+          <h2 style="color:#2c3e50">BuildSetu</h2>
+          <p>Hello <b>${labour.name}</b>,</p>
+          <p>Your profile has been approved.</p>
+        </div>
+      </div>
+      `
+    ).catch(err => console.log("MAIL ERROR:", err));
+
   } catch (error) {
+    console.log("APPROVE ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -136,8 +132,18 @@ const rejectLabour = async (req, res) => {
       { new: true }
     );
 
-    // send rejection email
-    await sendEmail(
+    if (!labour) {
+      return res.status(404).json({ message: "Labour not found" });
+    }
+
+    // ✅ SEND RESPONSE FIRST
+    res.json({
+      message: "Labour rejected",
+      labour
+    });
+
+    // ✅ SEND MAIL IN BACKGROUND
+    sendEmail(
       labour.email,
       "BuildSetu – Profile Verification Update",
       `
@@ -148,11 +154,9 @@ const rejectLabour = async (req, res) => {
 
           <p>Hello <b>${labour.name}</b>,</p>
 
-          <p>Thank you for registering with BuildSetu.</p>
+          <p>Your profile was not approved at this time.</p>
 
-          <p>Unfortunately, we could not approve your profile at this time.</p>
-
-          <p>If you believe this was a mistake, you can contact support or register again with updated information.</p>
+          <p>You can re-register with correct details.</p>
 
           <br/>
 
@@ -161,15 +165,10 @@ const rejectLabour = async (req, res) => {
         </div>
       </div>
       `
-    );
-
-
-    res.json({
-      message: "Labour rejected",
-      labour
-    });
+    ).catch(err => console.log("MAIL ERROR:", err));
 
   } catch (error) {
+    console.log("REJECT ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
