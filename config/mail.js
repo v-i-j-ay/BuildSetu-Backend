@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMail = async ({ to, subject, html }) => {
+const sendEmail = async ({ to, subject, html }) => {
   try {
     const info = await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -23,4 +23,4 @@ const sendMail = async ({ to, subject, html }) => {
   }
 };
 
-module.exports = sendMail;
+module.exports = sendEmail;
