@@ -1,22 +1,17 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,        // ✅ change from 465
-  secure: false,    // ✅ false for TLS
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    pass: process.env.EMAIL_PASS, // Gmail App Password (no spaces)
   },
-  tls: {
-    rejectUnauthorized: false
-  }
 });
 
-const sendEmail = async (to, subject, html) => {
+const sendMail = async ({ to, subject, html }) => {
   try {
     const info = await transporter.sendMail({
-      from: `"BuildSetu" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       to,
       subject,
       html,
@@ -28,4 +23,4 @@ const sendEmail = async (to, subject, html) => {
   }
 };
 
-module.exports = sendEmail;
+module.exports = sendMail;
