@@ -10,7 +10,15 @@ const app = express();
 
 /* ---------- MIDDLEWARE ---------- */
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://buildsetu.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 // IMPORTANT for form-data text fields
 app.use(express.urlencoded({ extended: true }));
