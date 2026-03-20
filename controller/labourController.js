@@ -22,6 +22,8 @@ console.log("FILE:", req.file);
       profile, // now stores Cloudinary URL
       public_id 
     });
+      
+     res.status(201).json({ message: "Labour registered successfully", labour });
 
     // ---- Email to admin ----
     await sendEmail(
@@ -64,7 +66,7 @@ console.log("FILE:", req.file);
       </div>`
     );
 
-    res.status(201).json({ message: "Labour registered successfully", labour });
+   
   } catch (error) {
     console.error("Labour registration error:", error);
     res.status(500).json({ message: error.message, stack: error.stack });
@@ -136,13 +138,13 @@ const rejectLabour = async (req, res) => {
       return res.status(404).json({ message: "Labour not found" });
     }
 
-    // ✅ SEND RESPONSE FIRST
+    
     res.json({
       message: "Labour rejected",
       labour
     });
 
-    // ✅ SEND MAIL IN BACKGROUND
+   
     sendEmail(
       labour.email,
       "BuildSetu – Profile Verification Update",

@@ -19,6 +19,8 @@ const registerContractor = async (req, res) => {
       profile, // stores Cloudinary URL
     });
 
+     res.status(201).json({ message: "Contractor registered successfully", contractor });
+
     // ---- Email to admin ----
     await sendEmail(
       process.env.ADMIN_EMAIL,
@@ -60,7 +62,7 @@ const registerContractor = async (req, res) => {
       </div>`
     );
 
-    res.status(201).json({ message: "Contractor registered successfully", contractor });
+   
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -86,6 +88,11 @@ const approveContractor = async (req, res) => {
       { status: "approved" },
       { new: true }
     );
+
+     res.json({
+      message: "Contractor approved successfully",
+      contractor
+    });
     
      // send approval email
     await sendEmail(
@@ -112,10 +119,7 @@ const approveContractor = async (req, res) => {
       `
     );
 
-    res.json({
-      message: "Contractor approved successfully",
-      contractor
-    });
+   
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -130,7 +134,12 @@ const rejectContractor = async (req, res) => {
       { status: "rejected" },
       { new: true }
     );
-
+     
+    res.json({
+      message: "contractor rejected",
+      contractor
+    });
+    
     // send rejection email
     await sendEmail(
       contractor.email,
@@ -159,10 +168,7 @@ const rejectContractor = async (req, res) => {
     );
 
 
-    res.json({
-      message: "contractor rejected",
-      contractor
-    });
+    
 
   } catch (error) {
     res.status(500).json({ message: error.message });
