@@ -1,23 +1,17 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // Gmail App Password (no spaces)
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const sendEmail = async ({ to, subject, html }) => {
+const sendEmail = async (to, subject, html) => {
   try {
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to,
+    const response = await resend.emails.send({
+      from: "BuildSetu <onboarding@resend.dev>",  // testing sender
+      to: [process.env.ADMIN_EMAIL],              // ALWAYS your email
       subject,
       html,
     });
 
-    console.log("MAIL SENT:", info.messageId);
+    console.log("MAIL SENT:", response);
   } catch (error) {
     console.log("MAIL ERROR:", error);
   }
