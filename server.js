@@ -5,6 +5,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const labourRoute = require("./routers/labourRoute");
 const contractorRoute = require("./routers/contractorRoute");
+const assistantRoutes = require("./routers/assistantRoutes");
 
 const app = express();
 
@@ -34,6 +35,8 @@ connectDB();
 
 app.use("/api/labours", labourRoute);
 app.use("/api/contractors", contractorRoute);
+app.use("/api/assistant", assistantRoutes);
+
 
 /* ---------- GLOBAL ERROR HANDLER ---------- */
 
@@ -50,5 +53,6 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log("server started");
+ console.log(`Server running on port ${PORT}`);
+
 });
